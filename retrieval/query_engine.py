@@ -9,23 +9,14 @@ load_dotenv()
 CHROMA_DIR = "chroma_db"
 client = Groq()
 
-def load_vector_store():
-    """Load the existing ChromaDB vector store."""
-    embeddings = SentenceTransformerEmbeddings(
-        model_name="all-MiniLM-L6-v2"
-    )
-    vector_store = Chroma(
-        persist_directory=CHROMA_DIR,
-        embedding_function=embeddings
-    )
-    return vector_store
+# ✅ Initialize once when the app starts, not on every query
+embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+vector_store = Chroma(
+    persist_directory=CHROMA_DIR,
+    embedding_function=embeddings
+)
 
 def query(question: str, top_k: int = 3) -> dict:
-    """
-    Retrieve relevant chunks and generate an answer.
-    """
-    vector_store = load_vector_store()
-
     # Step 1: Find most relevant chunks
     results = vector_store.similarity_search(question, k=top_k)
     context = "\n\n".join([r.page_content for r in results])
@@ -54,10 +45,3 @@ Answer clearly and concisely."""
         "sources": sources,
         "context_used": context
     }
-
-if __name__ == "__main__":
-    print("Testing query engine...\n")
-    result = query("What fields does a BufferingEvent contain?")
-    print(f"Question: {result['question']}")
-    print(f"\nAnswer: {result['answer']}")
-    print(f"\nSources: {result['sources']}")
