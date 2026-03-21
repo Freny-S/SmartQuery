@@ -5,6 +5,14 @@ Kafka event docs, and on-call runbooks in natural language.
 
 Built with LangChain, ChromaDB, Groq (LLaMA 3.3), FastAPI, and Streamlit.
 
+## 🌐 Live Demo
+
+| Service | URL |
+|---------|-----|
+| Streamlit UI | http://184.72.86.86:8501 |
+| FastAPI docs | http://184.72.86.86:8000/docs |
+
+
 ![Demo1](Demo1.png)
 ![Demo2](Demo2.png)
 ![Demo3](Demo3.png)
@@ -88,6 +96,14 @@ streamlit run app.py
 ```
 
 Open `http://localhost:8501`
+
+## 7. Running with Docker
+```bash
+docker-compose up --build
+```
+
+- API: http://localhost:8000/docs
+- UI: http://localhost:8501
 
 ---
 
